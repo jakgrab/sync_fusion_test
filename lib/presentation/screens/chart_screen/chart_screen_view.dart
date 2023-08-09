@@ -15,9 +15,6 @@ class ChartsScreenView extends StatefulWidget {
 class _ChartsScreenViewState extends State<ChartsScreenView> {
   late TrackballBehavior _trackballBehavior, _trackballBehavior2;
 
-  final temperatureKey = GlobalKey<TemperatureState>();
-  final humidityKey = GlobalKey<HumidityState>();
-
   double axisVisibleMin = 1, axisVisibleMax = 10;
   double chartZoomPosition = 0.5, chartZoomFactor = 0.2;
 
@@ -40,18 +37,26 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
             return Column(
               children: [
                 Temperature(
-                  key: temperatureKey,
                   data: state.tempData,
                   trackballBehavior: _trackballBehavior,
                   synchronizeTrackballs: (trackArgs) {
                     _trackballBehavior2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
                   },
                   onZoom: onZoom,
+                  onChartTapped: (touchArgs) {
+                    // _trackballBehavior2.showByIndex(touchArgs.position.dx.round());
+                    _trackballBehavior2.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
+                  },
+                  onTrackballPositionChanging: (trackArgs) {
+                    if (trackArgs.chartPointInfo.dataPointIndex != null) {
+                      // _trackballBehavior2.showByIndex(trackArgs.chartPointInfo.dataPointIndex!);
+                      // _trackballBehavior2.showByIndex(trackArgs.chartPointInfo.dataPointIndex!);
+                    }
+                  },
                   chartZoomFactor: chartZoomFactor,
                   chartZoomPosition: chartZoomPosition,
                 ),
                 Humidity(
-                  key: humidityKey,
                   seriesColor: Colors.red,
                   data: state.tempData,
                   trackballBehavior: _trackballBehavior2,
@@ -59,6 +64,15 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
                     _trackballBehavior.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
                   },
                   onZoom: onZoom,
+                  onChartTapped: (touchArgs) {
+                    // _trackballBehavior.showByIndex(touchArgs.position.dx.round());
+                    _trackballBehavior.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
+                  },
+                  onTrackballPositionChanging: (trackArgs) {
+                    if (trackArgs.chartPointInfo.dataPointIndex != null) {
+                      // _trackballBehavior.showByIndex(trackArgs.chartPointInfo.dataPointIndex!);
+                    }
+                  },
                   chartZoomFactor: chartZoomFactor,
                   chartZoomPosition: chartZoomPosition,
                 ),
@@ -77,6 +91,12 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
         chartZoomPosition = zoomArgs.currentZoomPosition;
       });
     }
+  }
+
+  void setTrackballPosition(TrackballArgs trackballArgs) {
+    setState(() {
+      selectedPointIndex = trackballArgs.chartPointInfo.dataPointIndex;
+    });
   }
 
   TrackballBehavior getTrackballBehavior() => TrackballBehavior(
