@@ -8,9 +8,9 @@ class Humidity extends StatefulWidget {
     this.seriesColor,
     required this.data,
     required this.trackballBehavior,
-    required this.synchronizeTrackballs,
+    // required this.synchronizeTrackballs,
     required this.onZoom,
-    required this.onTrackballPositionChanging,
+    // required this.onTrackballPositionChanging,
     required this.onChartTapped,
     required this.chartZoomFactor,
     required this.chartZoomPosition,
@@ -19,10 +19,10 @@ class Humidity extends StatefulWidget {
   final Color? seriesColor;
   final List<ChartData> data;
   final TrackballBehavior trackballBehavior;
-  final void Function(ChartTouchInteractionArgs) synchronizeTrackballs;
+  // final void Function(ChartTouchInteractionArgs) synchronizeTrackballs;
   final void Function(ChartTouchInteractionArgs) onChartTapped;
   final void Function(ZoomPanArgs) onZoom;
-  final void Function(TrackballArgs trackballArgs) onTrackballPositionChanging;
+  // final void Function(TrackballArgs trackballArgs) onTrackballPositionChanging;
 
   final double? chartZoomFactor;
   final double? chartZoomPosition;
@@ -49,7 +49,7 @@ class HumidityState extends State<Humidity> {
     return SfCartesianChart(
       zoomPanBehavior: _zoomPanBehavior,
       trackballBehavior: widget.trackballBehavior,
-      onChartTouchInteractionMove: (tapArgs) => widget.synchronizeTrackballs(tapArgs),
+      onChartTouchInteractionMove: widget.onChartTapped, //(tapArgs) => widget.synchronizeTrackballs(tapArgs),
       primaryXAxis: CategoryAxis(
         zoomFactor: widget.chartZoomFactor,
         zoomPosition: widget.chartZoomPosition,
@@ -58,7 +58,7 @@ class HumidityState extends State<Humidity> {
       ),
       onChartTouchInteractionUp: widget.onChartTapped,
       onZooming: widget.onZoom,
-      onTrackballPositionChanging: widget.onTrackballPositionChanging,
+      // onTrackballPositionChanging: widget.onTrackballPositionChanging,
       series: <ChartSeries>[
         SplineSeries<ChartData, String>(
           color: widget.seriesColor,

@@ -9,8 +9,8 @@ class Temperature extends StatefulWidget {
     required this.data,
     required this.trackballBehavior,
     required this.onZoom,
-    required this.synchronizeTrackballs,
-    required this.onTrackballPositionChanging,
+    // required this.synchronizeTrackballs,
+    // required this.onTrackballPositionChanging,
     required this.onChartTapped,
     required this.chartZoomFactor,
     required this.chartZoomPosition,
@@ -21,10 +21,10 @@ class Temperature extends StatefulWidget {
 
   final TrackballBehavior trackballBehavior;
   final void Function(ZoomPanArgs) onZoom;
-  final void Function(ChartTouchInteractionArgs) synchronizeTrackballs;
+  // final void Function(ChartTouchInteractionArgs) synchronizeTrackballs;
   final void Function(ChartTouchInteractionArgs) onChartTapped;
 
-  final void Function(TrackballArgs trackballArgs) onTrackballPositionChanging;
+  // final void Function(TrackballArgs trackballArgs) onTrackballPositionChanging;
 
   final double? chartZoomFactor;
   final double? chartZoomPosition;
@@ -52,8 +52,8 @@ class TemperatureState extends State<Temperature> {
       zoomPanBehavior: _zoomPanBehavior,
       trackballBehavior: widget.trackballBehavior,
       onZooming: widget.onZoom,
-      onChartTouchInteractionMove: (tapArgs) => widget.synchronizeTrackballs(tapArgs),
-      onTrackballPositionChanging: widget.onTrackballPositionChanging,
+      onChartTouchInteractionMove: widget.onChartTapped, //(tapArgs) => widget.synchronizeTrackballs(tapArgs),
+      // onTrackballPositionChanging: widget.onTrackballPositionChanging,
       onChartTouchInteractionUp: widget.onChartTapped,
       primaryXAxis: CategoryAxis(
         zoomFactor: widget.chartZoomFactor,

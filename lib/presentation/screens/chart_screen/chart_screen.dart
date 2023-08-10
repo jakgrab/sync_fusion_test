@@ -14,7 +14,8 @@ class ChartsScreen extends StatelessWidget {
         ..getTemperatureData()
         ..getHumidityData()
         ..getVpdData()
-        ..getCO2Data(),
+        ..getCO2Data()
+        ..getRangeData(),
       child: const ChartsScreenView(),
     );
   }

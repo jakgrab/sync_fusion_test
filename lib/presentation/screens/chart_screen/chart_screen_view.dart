@@ -6,6 +6,7 @@ import 'package:sync_fusion_test/presentation/screens/chart_screen/widgets/tempe
 import 'package:sync_fusion_test/presentation/screens/chart_screen/widgets/vpd_chart.dart';
 import 'package:sync_fusion_test/presentation/screens/cubit/chart_cubit.dart';
 import 'package:sync_fusion_test/presentation/screens/cubit/chart_state.dart';
+import 'package:sync_fusion_test/utils/extensions/list_operations_on_chart_data_list.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartsScreenView extends StatefulWidget {
@@ -61,62 +62,138 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  Temperature(
+                  // Temperature(
+                  //   data: state.tempData,
+                  //   trackballBehavior: _trackballBehaviorTemp,
+                  //   // synchronizeTrackballs: (trackArgs) {
+                  //   //   _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   //   _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   //   _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   // },
+                  //   onZoom: onZoom,
+                  //   onChartTapped: (touchArgs) {
+                  //     _trackballBehaviorHum.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
+                  //     _trackballBehaviorVpd.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
+                  //     _trackballBehaviorCO2.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
+                  //   },
+                  //   chartZoomFactor: chartZoomFactor,
+                  //   chartZoomPosition: chartZoomPosition,
+                  // ),
+                  // Humidity(
+                  //   seriesColor: Colors.red,
+                  //   data: state.humidityData,
+                  //   trackballBehavior: _trackballBehaviorHum,
+                  //   // synchronizeTrackballs: (trackArgs) {
+                  //   //   _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   //   _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   //   _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   // },
+                  //   onZoom: onZoom,
+                  //   onChartTapped: (touchArgs) {
+                  //     _trackballBehaviorTemp.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
+                  //     _trackballBehaviorVpd.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
+                  //     _trackballBehaviorCO2.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
+                  //   },
+                  //   chartZoomFactor: chartZoomFactor,
+                  //   chartZoomPosition: chartZoomPosition,
+                  // ),
+                  // VPD(
+                  //   data: state.vpdData,
+                  //   trackballBehavior: _trackballBehaviorVpd,
+                  //   onZoom: onZoom,
+                  //   // synchronizeTrackballs: (trackArgs) {
+                  //   //   _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   //   _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   //   _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   // },
+                  //   onChartTapped: (trackArgs) {
+                  //     _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //     _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //     _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   },
+                  //   chartZoomFactor: chartZoomFactor,
+                  //   chartZoomPosition: chartZoomPosition,
+                  // ),
+
+                  // CO2(
+                  //   title: 'CO2: ${state.co2Data.last.data.toInt()}ppm',
+                  //   data: state.co2Data,
+                  //   trackballBehavior: _trackballBehaviorCO2,
+                  //   seriesColor: Colors.black,
+                  //   onZoom: onZoom,
+                  //   // synchronizeTrackballs: (trackArgs) {
+                  //   //   _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   //   _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   //   _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   // },
+                  //   // onTrackballPositionChanging: (_) {},
+                  //   onChartTapped: (trackArgs) {
+                  //     _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //     _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //     _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                  //   },
+                  //   chartZoomFactor: chartZoomFactor,
+                  //   chartZoomPosition: chartZoomPosition,
+                  // ),
+                  CustomChart(
+                    title: 'Temperature: ${state.tempData.last.data.toInt()}°C',
                     data: state.tempData,
+                    rangeData: state.tempRange,
+                    max: state.tempData.maxValue,
+                    min: state.tempData.minValue,
+                    average: state.tempData.meanValue,
                     trackballBehavior: _trackballBehaviorTemp,
-                    synchronizeTrackballs: (trackArgs) {
+                    onZoom: onZoom,
+                    onChartTapped: (trackArgs) {
+                      _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
                       _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
                       _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                    },
-                    onZoom: onZoom,
-                    onChartTapped: (touchArgs) {
-                      _trackballBehaviorHum.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
-                      _trackballBehaviorVpd.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
-                      _trackballBehaviorCO2.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
-                    },
-                    onTrackballPositionChanging: (trackArgs) {
-                      if (trackArgs.chartPointInfo.dataPointIndex != null) {
-                        // _trackballBehavior2.showByIndex(trackArgs.chartPointInfo.dataPointIndex!);
-                        // _trackballBehavior2.showByIndex(trackArgs.chartPointInfo.dataPointIndex!);
-                      }
                     },
                     chartZoomFactor: chartZoomFactor,
                     chartZoomPosition: chartZoomPosition,
+                    pointColorMapper: (data, _) {
+                      if (data.data <= 25.0) {
+                        return Colors.purple;
+                      } else if (data.data > 25.0 && data.data <= 27.0) {
+                        return Colors.green;
+                      } else if (data.data > 27.0) {
+                        return Colors.red;
+                      }
+                      return Colors.greenAccent;
+                    },
                   ),
-                  Humidity(
-                    seriesColor: Colors.red,
+                  CustomChart(
+                    title: 'Humidity: ${state.humidityData.last.data.toInt()}%',
                     data: state.humidityData,
+                    max: state.humidityData.maxValue,
+                    min: state.humidityData.minValue,
+                    average: state.humidityData.meanValue,
                     trackballBehavior: _trackballBehaviorHum,
-                    synchronizeTrackballs: (trackArgs) {
-                      _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                    },
                     onZoom: onZoom,
-                    onChartTapped: (touchArgs) {
-                      _trackballBehaviorTemp.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
-                      _trackballBehaviorVpd.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
-                      _trackballBehaviorCO2.show(touchArgs.position.dx, touchArgs.position.dy, 'pixel');
-                    },
-                    onTrackballPositionChanging: (trackArgs) {
-                      if (trackArgs.chartPointInfo.dataPointIndex != null) {
-                        // _trackballBehavior.showByIndex(trackArgs.chartPointInfo.dataPointIndex!);
-                      }
+                    onChartTapped: (trackArgs) {
+                      _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                      _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                      _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
                     },
                     chartZoomFactor: chartZoomFactor,
                     chartZoomPosition: chartZoomPosition,
+                    pointColorMapper: (data, _) {
+                      if (data.data <= 25.0 || (data.data > 70.0 && data.data <= 80)) {
+                        return Colors.purple;
+                      } else if (data.data > 80) {
+                        return Colors.red;
+                      }
+                      return Colors.greenAccent;
+                    },
                   ),
-                  VPD(
+                  CustomChart(
+                    title: 'VPD: ${state.vpdData.last.data.toInt()}',
                     data: state.vpdData,
+                    max: state.vpdData.maxValue,
+                    min: state.vpdData.minValue,
+                    average: state.vpdData.meanValue,
                     trackballBehavior: _trackballBehaviorVpd,
                     onZoom: onZoom,
-                    synchronizeTrackballs: (trackArgs) {
-                      _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                    },
-                    onTrackballPositionChanging: (trackArgs) {},
                     onChartTapped: (trackArgs) {
                       _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
                       _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
@@ -124,18 +201,22 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
                     },
                     chartZoomFactor: chartZoomFactor,
                     chartZoomPosition: chartZoomPosition,
+                    pointColorMapper: (data, _) {
+                      if (data.data <= 1.0 || data.data > 1.5) {
+                        return Colors.purple;
+                      }
+                      return Colors.greenAccent;
+                    },
                   ),
-                  CO2(
+                  CustomChart(
+                    title: 'CO2: ${state.co2Data.last.data.toInt()}ppm',
                     data: state.co2Data,
+                    max: state.co2Data.maxValue,
+                    min: state.co2Data.minValue,
+                    average: state.co2Data.meanValue,
                     trackballBehavior: _trackballBehaviorCO2,
                     seriesColor: Colors.black,
                     onZoom: onZoom,
-                    synchronizeTrackballs: (trackArgs) {
-                      _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                    },
-                    onTrackballPositionChanging: (_) {},
                     onChartTapped: (trackArgs) {
                       _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
                       _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');

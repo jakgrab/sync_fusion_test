@@ -10,4 +10,6 @@ abstract class ChartRepositoryInterface {
   List<ChartData> getVpdData();
 
   List<ChartData> getCO2Data();
+
+  List<ChartData> getRangeData(double offset);
 }

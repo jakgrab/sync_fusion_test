@@ -51,4 +51,11 @@ class ChartRepository implements ChartRepositoryInterface {
       return ChartData(time: time, data: randomVpd);
     }).toList();
   }
+
+  @override
+  List<ChartData> getRangeData(double offset) {
+    return timeList.map((time) {
+      return ChartData(time: time, data: 0.0 + offset);
+    }).toList();
+  }
 }

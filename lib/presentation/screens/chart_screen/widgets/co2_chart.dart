@@ -1,39 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:sync_fusion_test/data/models/chart_data.dart';
+import 'package:sync_fusion_test/presentation/screens/cubit/chart_cubit.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class CO2 extends StatefulWidget {
-  const CO2({
+class CustomChart extends StatefulWidget {
+  const CustomChart({
     super.key,
     this.seriesColor,
+    this.title,
+    required this.max,
+    required this.min,
+    required this.average,
     required this.data,
+    this.rangeData,
     required this.trackballBehavior,
     required this.onZoom,
-    required this.synchronizeTrackballs,
-    required this.onTrackballPositionChanging,
     required this.onChartTapped,
     required this.chartZoomFactor,
     required this.chartZoomPosition,
+    this.pointColorMapper,
   });
 
   final Color? seriesColor;
+  final String? title;
+  final double max;
+  final double min;
+  final double average;
   final List<ChartData> data;
-
-  final TrackballBehavior trackballBehavior;
-  final void Function(ZoomPanArgs) onZoom;
-  final void Function(ChartTouchInteractionArgs) synchronizeTrackballs;
-  final void Function(ChartTouchInteractionArgs) onChartTapped;
-
-  final void Function(TrackballArgs trackballArgs) onTrackballPositionChanging;
-
+  final List<List<ChartData>>? rangeData;
   final double? chartZoomFactor;
   final double? chartZoomPosition;
+  final TrackballBehavior trackballBehavior;
+  final void Function(ZoomPanArgs) onZoom;
+  final void Function(ChartTouchInteractionArgs) onChartTapped;
+  final Color? Function(ChartData data, int index)? pointColorMapper;
+
+  ChartCubit getCubit(BuildContext context) => context.read<ChartCubit>();
 
   @override
-  State<CO2> createState() => CO2State();
+  State<CustomChart> createState() => CustomChartState();
 }
 
-class CO2State extends State<CO2> {
+class CustomChartState extends State<CustomChart> {
   late ZoomPanBehavior _zoomPanBehavior;
 
   @override
@@ -49,38 +58,82 @@ class CO2State extends State<CO2> {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
-      title: ChartTitle(text: 'CO2: ${widget.data.last.data.toInt()}ppm', alignment: ChartAlignment.near),
+      title: ChartTitle(text: widget.title ?? '', alignment: ChartAlignment.near),
       zoomPanBehavior: _zoomPanBehavior,
       trackballBehavior: widget.trackballBehavior,
       onZooming: widget.onZoom,
-      onChartTouchInteractionMove: (tapArgs) => widget.synchronizeTrackballs(tapArgs),
-      onTrackballPositionChanging: widget.onTrackballPositionChanging,
+      onChartTouchInteractionMove: widget.onChartTapped,
       onChartTouchInteractionUp: widget.onChartTapped,
+      onTrackballPositionChanging: (trackballArgs) {
+        final series = trackballArgs.chartPointInfo.series;
+
+        if (series?.name == 'Range') {
+          trackballArgs.chartPointInfo.header = '';
+          trackballArgs.chartPointInfo.label = '';
+        }
+      },
       primaryXAxis: CategoryAxis(
         isVisible: false,
         zoomFactor: widget.chartZoomFactor,
         zoomPosition: widget.chartZoomPosition,
         name: 'primaryXAxis',
-        // maximumLabelWidth: 1,
       ),
       primaryYAxis: NumericAxis(
-        // title: AxisTitle(text: "CO2"),
         isVisible: false,
-        // zoomFactor: widget.chartZoomFactor,
-        // zoomPosition: widget.chartZoomPosition,
         name: 'primaryYAxis',
-        // maximumLabelWidth: 1,
       ),
+      annotations: [
+        CartesianChartAnnotation(
+          widget: Container(child: Text('Max ${widget.max}')),
+          verticalAlignment: ChartAlignment.center,
+          horizontalAlignment: ChartAlignment.far,
+          coordinateUnit: CoordinateUnit.logicalPixel,
+          x: 400,
+          y: 40,
+        ),
+        CartesianChartAnnotation(
+          widget: Container(child: Text('Avg ${widget.average}')),
+          verticalAlignment: ChartAlignment.center,
+          horizontalAlignment: ChartAlignment.far,
+          coordinateUnit: CoordinateUnit.logicalPixel,
+          x: 400,
+          y: 140,
+        ),
+        CartesianChartAnnotation(
+          widget: Container(child: Text('Min ${widget.min}')),
+          verticalAlignment: ChartAlignment.center,
+          horizontalAlignment: ChartAlignment.far,
+          coordinateUnit: CoordinateUnit.logicalPixel,
+          x: 400,
+          y: 240,
+        )
+      ],
       series: <ChartSeries>[
         SplineSeries<ChartData, String>(
           color: widget.seriesColor,
           dataSource: widget.data,
           xValueMapper: (ChartData data, _) => data.time,
           yValueMapper: (ChartData data, _) => data.data,
-          // pointColorMapper: (data, _) {
-          //   return Colors.black;
-          // },
-        )
+          pointColorMapper: widget.pointColorMapper,
+        ),
+        if (widget.rangeData != null) ...[
+          LineSeries<ChartData, String>(
+            name: 'Range',
+            color: Colors.deepPurple,
+            dataSource: widget.rangeData!.first,
+            xValueMapper: (ChartData data, _) => data.time,
+            yValueMapper: (ChartData data, _) => data.data,
+            dashArray: [2.0, 5.0],
+          ),
+          LineSeries<ChartData, String>(
+            name: 'Range',
+            color: Colors.deepPurple,
+            dataSource: widget.rangeData!.last,
+            xValueMapper: (ChartData data, _) => data.time,
+            yValueMapper: (ChartData data, _) => data.data,
+            dashArray: [2.0, 5.0],
+          )
+        ],
       ],
     );
   }
