@@ -7,5 +7,8 @@ part 'chart_state.freezed.dart';
 class ChartState with _$ChartState {
   factory ChartState({
     @Default([]) List<ChartData> tempData,
+    @Default([]) List<ChartData> humidityData,
+    @Default([]) List<ChartData> vpdData,
+    @Default([]) List<ChartData> co2Data,
   }) = _ChartState;
 }

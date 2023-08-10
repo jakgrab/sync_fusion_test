@@ -13,4 +13,19 @@ class ChartCubit extends Cubit<ChartState> {
     final temp = _chartRepository.getTemperatureData();
     emit(state.copyWith(tempData: temp));
   }
+
+  void getHumidityData() {
+    final humidity = _chartRepository.getHumidityData();
+    emit(state.copyWith(humidityData: humidity));
+  }
+
+  void getVpdData() {
+    final vpd = _chartRepository.getVpdData();
+    emit(state.copyWith(vpdData: vpd));
+  }
+
+  void getCO2Data() {
+    final co2 = _chartRepository.getCO2Data();
+    emit(state.copyWith(co2Data: co2));
+  }
 }

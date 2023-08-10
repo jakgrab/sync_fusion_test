@@ -10,7 +10,11 @@ class ChartsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => Modular.get<ChartCubit>()..getTemperatureData(),
+      create: (context) => Modular.get<ChartCubit>()
+        ..getTemperatureData()
+        ..getHumidityData()
+        ..getVpdData()
+        ..getCO2Data(),
       child: const ChartsScreenView(),
     );
   }

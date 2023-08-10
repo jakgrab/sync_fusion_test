@@ -4,6 +4,8 @@ import 'package:sync_fusion_test/data/models/chart_data.dart';
 import 'package:sync_fusion_test/data/repository/chart_repository_interface.dart';
 
 class ChartRepository implements ChartRepositoryInterface {
+  List<String> get timeList => generateTimeList();
+
   @override
   List<String> generateTimeList() {
     List<String> timeList = [];
@@ -20,11 +22,33 @@ class ChartRepository implements ChartRepositoryInterface {
 
   @override
   List<ChartData> getTemperatureData() {
-    final timeList = generateTimeList();
-
     return timeList.map((time) {
-      double randomData = Random().nextDouble() * 40.0;
+      double randomData = Random().nextDouble() * (30.0 - 18.0) + 18.0;
       return ChartData(time: time, data: randomData);
+    }).toList();
+  }
+
+  @override
+  List<ChartData> getHumidityData() {
+    return timeList.map((time) {
+      double randomHumidity = Random().nextDouble() * 100.0;
+      return ChartData(time: time, data: randomHumidity);
+    }).toList();
+  }
+
+  @override
+  List<ChartData> getVpdData() {
+    return timeList.map((time) {
+      double randomVpd = Random().nextDouble() * (2.0 - 0.5) + 0.5;
+      return ChartData(time: time, data: randomVpd);
+    }).toList();
+  }
+
+  @override
+  List<ChartData> getCO2Data() {
+    return timeList.map((time) {
+      double randomVpd = Random().nextInt(1600) + 800;
+      return ChartData(time: time, data: randomVpd);
     }).toList();
   }
 }
