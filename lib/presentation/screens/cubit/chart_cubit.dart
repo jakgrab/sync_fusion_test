@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sync_fusion_test/data/models/chart_data.dart';
 import 'package:sync_fusion_test/data/repository/chart_repository_interface.dart';
 import 'package:sync_fusion_test/presentation/screens/cubit/chart_state.dart';
 
