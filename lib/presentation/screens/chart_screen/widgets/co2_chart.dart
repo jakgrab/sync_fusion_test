@@ -59,6 +59,7 @@ class CustomChartState extends State<CustomChart> {
   Widget build(BuildContext context) {
     return SfCartesianChart(
       title: ChartTitle(text: widget.title ?? '', alignment: ChartAlignment.near),
+      plotAreaBorderColor: Color(0xff090d19),
       zoomPanBehavior: _zoomPanBehavior,
       trackballBehavior: widget.trackballBehavior,
       onZooming: widget.onZoom,
@@ -66,6 +67,10 @@ class CustomChartState extends State<CustomChart> {
       onChartTouchInteractionUp: widget.onChartTapped,
       onTrackballPositionChanging: (trackballArgs) {
         final series = trackballArgs.chartPointInfo.series;
+        if (series?.name == 'data') {
+          // The way to extract the index
+          print("Index: ${trackballArgs.chartPointInfo.dataPointIndex}");
+        }
 
         if (series?.name == 'Range') {
           trackballArgs.chartPointInfo.header = '';
@@ -92,7 +97,11 @@ class CustomChartState extends State<CustomChart> {
           y: 40,
         ),
         CartesianChartAnnotation(
-          widget: Container(child: Text('Avg ${widget.average}')),
+          widget: Container(
+              child: Text(
+            'Avg ${widget.average}',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff232d43)),
+          )),
           verticalAlignment: ChartAlignment.center,
           horizontalAlignment: ChartAlignment.far,
           coordinateUnit: CoordinateUnit.logicalPixel,
@@ -110,6 +119,7 @@ class CustomChartState extends State<CustomChart> {
       ],
       series: <ChartSeries>[
         SplineSeries<ChartData, String>(
+          name: 'data',
           color: widget.seriesColor,
           dataSource: widget.data,
           xValueMapper: (ChartData data, _) => data.time,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class ChartsApp extends StatelessWidget {
@@ -6,9 +7,13 @@ class ChartsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return MaterialApp.router(
       title: 'Sync Fusion Test',
-      theme: ThemeData(primarySwatch: Colors.purple),
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Color(0xff090d19),
+      ),
+      themeMode: ThemeMode.dark,
       routerConfig: Modular.routerConfig,
     );
   }

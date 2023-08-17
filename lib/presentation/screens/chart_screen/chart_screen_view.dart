@@ -40,32 +40,35 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  CustomChart(
-                    title: 'Temperature: ${state.tempData.last.data.toInt()}°C',
-                    data: state.tempData,
-                    rangeData: state.tempRange,
-                    max: state.tempData.maxValue,
-                    min: state.tempData.minValue,
-                    average: state.tempData.meanValue,
-                    trackballBehavior: _trackballBehaviorTemp,
-                    onZoom: onZoom,
-                    onChartTapped: (trackArgs) {
-                      _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                      _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
-                    },
-                    chartZoomFactor: chartZoomFactor,
-                    chartZoomPosition: chartZoomPosition,
-                    pointColorMapper: (data, _) {
-                      if (data.data <= 25.0) {
-                        return Colors.purple;
-                      } else if (data.data > 25.0 && data.data <= 27.0) {
-                        return Colors.green;
-                      } else if (data.data > 27.0) {
-                        return Colors.red;
-                      }
-                      return Colors.greenAccent;
-                    },
+                  SizedBox(
+                    height: 250,
+                    child: CustomChart(
+                      title: 'Temperature: ${state.tempData.last.data.toInt()}°C',
+                      data: state.tempData,
+                      rangeData: state.tempRange,
+                      max: state.tempData.maxValue,
+                      min: state.tempData.minValue,
+                      average: state.tempData.meanValue,
+                      trackballBehavior: _trackballBehaviorTemp,
+                      onZoom: onZoom,
+                      onChartTapped: (trackArgs) {
+                        _trackballBehaviorCO2.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                        _trackballBehaviorHum.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                        _trackballBehaviorVpd.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
+                      },
+                      chartZoomFactor: chartZoomFactor,
+                      chartZoomPosition: chartZoomPosition,
+                      pointColorMapper: (data, _) {
+                        if (data.data <= 25.0) {
+                          return Colors.purple;
+                        } else if (data.data > 25.0 && data.data <= 27.0) {
+                          return Colors.green;
+                        } else if (data.data > 27.0) {
+                          return Colors.red;
+                        }
+                        return Colors.greenAccent;
+                      },
+                    ),
                   ),
                   CustomChart(
                     title: 'Humidity: ${state.humidityData.last.data.toInt()}%',
@@ -120,7 +123,7 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
                     min: state.co2Data.minValue,
                     average: state.co2Data.meanValue,
                     trackballBehavior: _trackballBehaviorCO2,
-                    seriesColor: Colors.black,
+                    seriesColor: Colors.white,
                     onZoom: onZoom,
                     onChartTapped: (trackArgs) {
                       _trackballBehaviorTemp.show(trackArgs.position.dx, trackArgs.position.dy, 'pixel');
@@ -154,7 +157,7 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
     });
   }
 
-  TrackballBehavior getTrackballBehavior({Color? color, int? decimalPlacesNum, required String format}) =>
+  TrackballBehavior getTrackballBehavior({Color? color, int? decimalPlacesNum, String format = 'point.y@point.x'}) =>
       TrackballBehavior(
         activationMode: ActivationMode.singleTap,
         tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
@@ -162,7 +165,7 @@ class _ChartsScreenViewState extends State<ChartsScreenView> {
         shouldAlwaysShow: true,
         tooltipSettings: InteractiveTooltip(
           decimalPlaces: decimalPlacesNum ?? 2,
-          color: color,
+          color: Colors.greenAccent,
           enable: true,
           arrowLength: 0,
           arrowWidth: 0,
