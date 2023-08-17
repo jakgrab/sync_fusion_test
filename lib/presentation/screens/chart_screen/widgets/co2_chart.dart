@@ -69,7 +69,7 @@ class CustomChartState extends State<CustomChart> {
         final series = trackballArgs.chartPointInfo.series;
         if (series?.name == 'data') {
           // The way to extract the index
-          print("Index: ${trackballArgs.chartPointInfo.dataPointIndex}");
+          // print("Index: ${trackballArgs.chartPointInfo.dataPointIndex}");
         }
 
         if (series?.name == 'Range') {
@@ -89,32 +89,43 @@ class CustomChartState extends State<CustomChart> {
       ),
       annotations: [
         CartesianChartAnnotation(
-          widget: Container(child: Text('Max ${widget.max}')),
+          widget: Container(
+            child: Text(
+              'Max ${widget.max}',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff232d43)),
+            ),
+          ),
           verticalAlignment: ChartAlignment.center,
           horizontalAlignment: ChartAlignment.far,
           coordinateUnit: CoordinateUnit.logicalPixel,
           x: 400,
-          y: 40,
+          y: 20,
         ),
         CartesianChartAnnotation(
           widget: Container(
-              child: Text(
-            'Avg ${widget.average}',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff232d43)),
-          )),
+            child: Text(
+              'Avg ${widget.average}',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff232d43)),
+            ),
+          ),
+          verticalAlignment: ChartAlignment.center,
+          horizontalAlignment: ChartAlignment.far,
+          coordinateUnit: CoordinateUnit.logicalPixel,
+          x: 400,
+          y: 80,
+        ),
+        CartesianChartAnnotation(
+          widget: Container(
+            child: Text(
+              'Min ${widget.min}',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff232d43)),
+            ),
+          ),
           verticalAlignment: ChartAlignment.center,
           horizontalAlignment: ChartAlignment.far,
           coordinateUnit: CoordinateUnit.logicalPixel,
           x: 400,
           y: 140,
-        ),
-        CartesianChartAnnotation(
-          widget: Container(child: Text('Min ${widget.min}')),
-          verticalAlignment: ChartAlignment.center,
-          horizontalAlignment: ChartAlignment.far,
-          coordinateUnit: CoordinateUnit.logicalPixel,
-          x: 400,
-          y: 240,
         )
       ],
       series: <ChartSeries>[
@@ -130,6 +141,7 @@ class CustomChartState extends State<CustomChart> {
           LineSeries<ChartData, String>(
             name: 'Range',
             color: Colors.deepPurple,
+            width: 0.8,
             dataSource: widget.rangeData!.first,
             xValueMapper: (ChartData data, _) => data.time,
             yValueMapper: (ChartData data, _) => data.data,
@@ -138,6 +150,7 @@ class CustomChartState extends State<CustomChart> {
           LineSeries<ChartData, String>(
             name: 'Range',
             color: Colors.deepPurple,
+            width: 0.8,
             dataSource: widget.rangeData!.last,
             xValueMapper: (ChartData data, _) => data.time,
             yValueMapper: (ChartData data, _) => data.data,

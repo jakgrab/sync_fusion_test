@@ -12,4 +12,6 @@ abstract class ChartRepositoryInterface {
   List<ChartData> getCO2Data();
 
   List<ChartData> getRangeData(double offset);
+
+  List<ChartData> getDewPointData();
 }

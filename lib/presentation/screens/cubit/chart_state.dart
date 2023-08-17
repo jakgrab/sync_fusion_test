@@ -10,6 +10,7 @@ class ChartState with _$ChartState {
     @Default([]) List<ChartData> humidityData,
     @Default([]) List<ChartData> vpdData,
     @Default([]) List<ChartData> co2Data,
+    @Default([]) List<ChartData> dewPointData,
     @Default([]) List<List<ChartData>> tempRange,
     @Default([]) List<List<ChartData>> humRange,
     @Default([]) List<List<ChartData>> vpdRange,

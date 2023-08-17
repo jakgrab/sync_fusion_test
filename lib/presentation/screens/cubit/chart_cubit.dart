@@ -29,6 +29,11 @@ class ChartCubit extends Cubit<ChartState> {
     emit(state.copyWith(co2Data: co2));
   }
 
+  void getDewPointData() {
+    final dew = _chartRepository.getDewPointData();
+    emit(state.copyWith(dewPointData: dew));
+  }
+
   void getRangeData() {
     final minTempRange = _chartRepository.getRangeData(20);
     final maxTempRange = _chartRepository.getRangeData(30);

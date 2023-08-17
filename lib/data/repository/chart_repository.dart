@@ -47,8 +47,8 @@ class ChartRepository implements ChartRepositoryInterface {
   @override
   List<ChartData> getCO2Data() {
     return timeList.map((time) {
-      double randomVpd = Random().nextInt(1600) + 800;
-      return ChartData(time: time, data: randomVpd);
+      double randomCo2 = Random().nextInt(1600) + 800;
+      return ChartData(time: time, data: randomCo2);
     }).toList();
   }
 
@@ -56,6 +56,14 @@ class ChartRepository implements ChartRepositoryInterface {
   List<ChartData> getRangeData(double offset) {
     return timeList.map((time) {
       return ChartData(time: time, data: 0.0 + offset);
+    }).toList();
+  }
+
+  @override
+  List<ChartData> getDewPointData() {
+    return timeList.map((time) {
+      double randomDew = Random().nextDouble() * (1.0 - 18.0) + 18.0;
+      return ChartData(time: time, data: randomDew);
     }).toList();
   }
 }
